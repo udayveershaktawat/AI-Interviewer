@@ -8,7 +8,7 @@ const dbConnect = ()=>{
     .catch((error)=>{
         console.log(error)
         console.log("error while connecting db")
-        process.exit(1)
+       
     })
 }
 
