@@ -1,12 +1,29 @@
 import express from "express";
 import dbConnect from "./config/dbconnect.js";
+import cors from "cors"
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import authRouter from "./routes/auth.route.js"
+import morgan from "morgan"
+
+
 
 const app = express();
-import dotenv from "dotenv";
 dotenv.config();
 
 const PORT = process.env.PORT || 3000
 
+
+app.use(express.json())
+app.use(cookieParser())
+app.use(cors({
+  origin:"http://localhost:5173",
+  credentials:true
+}))
+app.use(morgan("dev"))
+
+app.use("/api/auth",authRouter)
+app.use(express.urlencoded({extended:true}))
 
 
 
