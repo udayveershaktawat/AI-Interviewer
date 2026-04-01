@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js"
 import morgan from "morgan"
+import userRouter from "./routes/user.route.js";
 
 
 
@@ -23,6 +24,10 @@ app.use(cors({
 app.use(morgan("dev"))
 
 app.use("/api/auth",authRouter)
+app.use("/api/user",userRouter)
+
+
+
 app.use(express.urlencoded({extended:true}))
 
 
