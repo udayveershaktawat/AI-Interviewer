@@ -4,7 +4,11 @@ const AuthModel = () => {
   return (
     <div>
       <div>
-        <div>3:15</div>
+        <div>3:15
+
+
+          
+        </div>
       </div>
 
 
