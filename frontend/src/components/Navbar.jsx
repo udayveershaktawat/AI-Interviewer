@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { serverUrl } from "../App";
 import { setUserData } from "../redux/userSlice";
+import AuthModel from "./AuthModel";
+
 
 const Navbar = () => {
   const { userData } = useSelector((state) => state.user);
@@ -15,6 +17,7 @@ const Navbar = () => {
   const [showUserPopup, setShowUserPopup] = useState(false);
   const navigate = useNavigate();
   const dispatch =  useDispatch()
+  const [showAuth,setShowAuth] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -54,6 +57,10 @@ const Navbar = () => {
           <div className="relative">
             <button
               onClick={() => {
+                if(!userData){
+                  setShowAuth(true)
+                  return
+                }
                 setShowCreditPopup(!showCreditPopup);
                 setShowUserPopup(false);
               }}
@@ -68,6 +75,7 @@ const Navbar = () => {
                   Need more credits to continue interviews?
                 </p>
                 <button
+                
                   onClick={() => navigate("/pricing")}
                   className="w-full bg-black text-white py-2 rounded-lg text-sm"
                 >
@@ -79,6 +87,10 @@ const Navbar = () => {
           <div className="relative">
             <button
               onClick={() => {
+                 if(!userData){
+                  setShowAuth(true)
+                  return
+                }
                 setShowUserPopup(!showUserPopup);
                 setShowCreditPopup(false);
               }}
@@ -111,6 +123,7 @@ const Navbar = () => {
           </div>
         </div>
       </motion.div>
+      {showAuth && <AuthModel onClose={()=>setShowAuth(false)}/>}
     </div>
   );
 };
