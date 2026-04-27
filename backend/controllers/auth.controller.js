@@ -29,7 +29,7 @@ export const googleAuth =async(req,res,)=>{
     httpOnly: true,   // ✅ correct
     secure: false,    // keep false for localhost
     sameSite: "lax",  // better for development
-    maxAge: 7 * 24 * 60 * 60 * 1000
+    
 });
 
  console.log(token)
