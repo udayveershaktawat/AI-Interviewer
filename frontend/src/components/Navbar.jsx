@@ -10,32 +10,27 @@ import { serverUrl } from "../App";
 import { setUserData } from "../redux/userSlice";
 import AuthModel from "./AuthModel";
 
-
 const Navbar = () => {
   const { userData } = useSelector((state) => state.user);
   const [showCreditPopup, setShowCreditPopup] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const navigate = useNavigate();
-  const dispatch =  useDispatch()
-  const [showAuth,setShowAuth] = useState(false);
+  const dispatch = useDispatch();
+  const [showAuth, setShowAuth] = useState(false);
 
   const handleLogout = async () => {
     try {
-        await axios.get(serverUrl + "/api/auth/logout" , {withCredentials:true})
-        dispatch(setUserData(null))
-        setShowCreditPopup(false)
-        setShowUserPopup(false)
-        navigate("/")
-
+      await axios.get(serverUrl + "/api/auth/logout", {
+        withCredentials: true,
+      });
+      dispatch(setUserData(null));
+      setShowCreditPopup(false);
+      setShowUserPopup(false);
+      navigate("/");
     } catch (error) {
-        console.log(error)
-        
+      console.log(error);
     }
-    
-  }
-
-
-
+  };
 
   return (
     <div className="bg-[#f3f3f3] flex justify-center pt-6">
@@ -57,9 +52,9 @@ const Navbar = () => {
           <div className="relative">
             <button
               onClick={() => {
-                if(!userData){
-                  setShowAuth(true)
-                  return
+                if (!userData) {
+                  setShowAuth(true);
+                  return;
                 }
                 setShowCreditPopup(!showCreditPopup);
                 setShowUserPopup(false);
@@ -75,7 +70,6 @@ const Navbar = () => {
                   Need more credits to continue interviews?
                 </p>
                 <button
-                
                   onClick={() => navigate("/pricing")}
                   className="w-full bg-black text-white py-2 rounded-lg text-sm"
                 >
@@ -87,17 +81,17 @@ const Navbar = () => {
           <div className="relative">
             <button
               onClick={() => {
-                 if(!userData){
-                  setShowAuth(true)
-                  return
+                if (!userData) {
+                  setShowAuth(true);
+                  return;
                 }
                 setShowUserPopup(!showUserPopup);
                 setShowCreditPopup(false);
               }}
               className="w-9 h-9 bg-black text-white  rounded-full flex items-center justify-center font-semibold"
             >
-              {userData ? (
-                userData?.name.slice(0, 1).toUpperCase()
+              {userData?.name ? (
+                userData.name.slice(0, 1).toUpperCase()
               ) : (
                 <FaUserAstronaut size={16} />
               )}
@@ -114,7 +108,10 @@ const Navbar = () => {
                 >
                   Interview History
                 </button>
-                <button onClick={handleLogout} className="w-full text-left text-sm py-2 flex items-center gap-2 text-red-500">
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left text-sm py-2 flex items-center gap-2 text-red-500"
+                >
                   <HiOutlineLogout size={16} />
                   Logout
                 </button>
@@ -123,9 +120,12 @@ const Navbar = () => {
           </div>
         </div>
       </motion.div>
-      {showAuth && <AuthModel onClose={()=>setShowAuth(false)}/>}
+      {showAuth && <AuthModel onClose={() => setShowAuth(false)} />}
     </div>
   );
 };
 
 export default Navbar;
+
+
+// {userData ? ( userData?.name.slice(0, 1).toUpperCase() ) : ( <FaUserAstronaut size={16} /> )}
