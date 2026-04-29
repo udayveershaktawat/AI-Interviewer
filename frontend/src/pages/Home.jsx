@@ -276,6 +276,7 @@ const Home = () => {
         </div>
       </div>
       {showAuth && <AuthModel onClose={() => setShowAuth(false)} />}
+        {/* footer */}
         <Footer/>
     </div>
   );
