@@ -76,6 +76,12 @@ const Auth = ({isModel = false}) => {
 
         </motion.div>
       
+
+
+
+
+
+      
     </div>
   )
 }
