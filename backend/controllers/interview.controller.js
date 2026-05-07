@@ -1,40 +1,33 @@
-
-import fs from "fs"
-import pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"
+import fs from "fs";
+import pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import { askAi } from "../services/openRouter.services.js";
 
+export const analyzeResume = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "resume required" });
+    }
+    const filepath = req.file.path;
 
+    const fileBuffer = await fs.promises.readFile(filepath);
+    const uint8Array = new Unint8Array(fileBuffer);
 
+    const pdf = await pdfjsLib.getDocument({ data: unint8Array }).promise;
 
+    let resumeText = "";
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const content = await page.getTextContent();
 
+      const pageText = content.items.map((item) => item.str).join(" ");
+      resumeText += pageText + "\n";
+    }
+    resumeText = resumeText.replace(/\s+/g, " ").trim();
 
-
-export const analyzeResume = async (req,res) => {
-    try {
-        if(!req.file){
-            return res.status(400).json({message:"resume required"})
-        }
-        const filepath = req.file.path;
-
-        const fileBuffer = await fs.promises.readFile(filepath)
-        const uint8Array = new Unint8Array(fileBuffer)
-
-        const pdf = await pdfjsLib.getDocument({data:unint8Array}).promise;
-
-        let resumeText =""
-        for(let pageNum =1; pageNum<=pdf.numPages;pageNum++){
-            const page = await pdf.getPage(pageNum)
-            const content = await page.getTextContent();
-
-            const pageText = content.items.map(item=>item.str).join(" ");
-            resumeText += pageText + "\n"
-        }
-        resumeText = resumeText.replace(/\s+/g," ").trim();
-
-        const messages = [
-  {
-    role: "system",
-    content: `
+    const messages = [
+      {
+        role: "system",
+        content: `
 Extract structured data from resume.
 
 Return strictly JSON:
@@ -46,40 +39,35 @@ Return strictly JSON:
   "skills": ["skill1", "skill2"]
 }
 `,
-  },
-  {
-    role: "user",
-    content: resumeText,
-  },
-];
+      },
+      {
+        role: "user",
+        content: resumeText,
+      },
+    ];
 
+    const aiResponse = await askAi(messages);
 
-const aiResponse = await askAi(messages)
+    const parsed = JSON.parse(aiResponse);
 
-const parsed = JSON.parse(aiResponse)
+    fs.unlinkSync(filepath);
 
-fs.unlinkSync(filepath)
+    res.json({
+      role: parsed.role,
+      experience: parsed.experience,
+      projects: parsed.projects,
+      skills: parsed.skills,
+      resumeText: resumeText,
+    });
+  } catch (error) {
+    console.error(error);
 
-
-res.json({
-  role: parsed.role,
-  experience: parsed.experience,
-  projects: parsed.projects,
-  skills: parsed.skills,
-  resumeText: resumeText,
-});
-        
-    } catch (error) {
-        console.error(error);
-
-  if (req.file && fs.existsSync(req.file.path)) {
-    fs.unlinkSync(req.file.path);
-  }
-
-  res.status(500).json({
-    message: error.message,
-  });
-        
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
     }
-    
-}
+
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
