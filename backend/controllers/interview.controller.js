@@ -1,6 +1,7 @@
 
 import fs from "fs"
 import pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"
+import { askAi } from "../services/openRouter.services.js";
 
 
 
@@ -51,8 +52,33 @@ Return strictly JSON:
     content: resumeText,
   },
 ];
+
+
+const aiResponse = await askAi(messages)
+
+const parsed = JSON.parse(aiResponse)
+
+fs.unlinkSync(filepath)
+
+
+res.json({
+  role: parsed.role,
+  experience: parsed.experience,
+  projects: parsed.projects,
+  skills: parsed.skills,
+  resumeText: resumeText,
+});
         
     } catch (error) {
+        console.error(error);
+
+  if (req.file && fs.existsSync(req.file.path)) {
+    fs.unlinkSync(req.file.path);
+  }
+
+  res.status(500).json({
+    message: error.message,
+  });
         
     }
     
