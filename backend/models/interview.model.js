@@ -1,40 +1,76 @@
 import mongoose from "mongoose";
 
-const interviewSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
+
+const questionsSchema = new mongoose.Schema({
+  question: String,
+  difficulty: String,
+  timeLimit: Number,
+  answer: String,
+  feedback: String,
+
+  score: {
+    type: Number,
+    default: 0
   },
 
-  role: {
-    type: String,
-    required: true
+  confidence: {
+    type: Number,
+    default: 0
   },
 
-  experience: {
-    type: String,
-    required: true
+  communication: {
+    type: Number,
+    default: 0
   },
 
-  mode: {
-    type: String,
-    enum: ["HR", "Technical"],
-    required: true
-  },
-  resumeText:{
-    type:String
-  },
-  questions:[questionsSchema],
-  finalScore: {
-  type: Number,
-  default: 0
-},
+  correctness: {
+    type: Number,
+    default: 0
+  }
 
-status: {
-  type: String,
-  enum: ["Incomplete", "completed"],
-  default: "Incomplete",
-},
+})
 
-}, { timestamps: true })
+const interviewSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    role: {
+      type: String,
+      required: true,
+    },
+
+    experience: {
+      type: String,
+      required: true,
+    },
+
+    mode: {
+      type: String,
+      enum: ["HR", "Technical"],
+      required: true,
+    },
+    resumeText: {
+      type: String,
+    },
+    questions: [questionsSchema],
+    finalScore: {
+      type: Number,
+      default: 0,
+    },
+
+    status: {
+      type: String,
+      enum: ["Incomplete", "completed"],
+      default: "Incomplete",
+    },
+  },
+  { timestamps: true },
+);
+
+const Interview = mongoose.model("Interview",interviewSchema)
+
+export default Interview;
