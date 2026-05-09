@@ -109,4 +109,4 @@ FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 FIREBASE_APP_ID=your_app_id
 
 
-git clone https://github.com/your-username/AI-Interview-Agent.git
+git clone https://github.com/udayveershaktawat/AI-Interviewer.git
