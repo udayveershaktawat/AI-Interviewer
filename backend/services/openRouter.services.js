@@ -15,7 +15,7 @@ export const askAi = async (messages) => {
       {
         model: "openai/gpt-5.2",
         messages: messages,
-        max_tokens: 1500,
+        max_tokens: 600,
       },
       {
         headers: {
