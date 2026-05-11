@@ -2,31 +2,27 @@ import axios from "axios";
 
 export const askAi = async (messages) => {
   try {
-    if (
-      !messages ||
-      !Array.isArray(messages) ||
-      messages.length === 0
-    ) {
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
       throw new Error("messages array is empty");
     }
 
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "openai/gpt-5.2",
+        model: "inclusionai/ring-2.6-1t:free",
         messages: messages,
-        max_tokens: 600,
+        // max_tokens: 500,
+        temperature: 0.2,
       },
       {
         headers: {
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
-    const content =
-      response.data.choices[0].message.content;
+    const content = response.data.choices[0].message.content;
 
     if (!content || !content.trim()) {
       throw new Error("AI returned empty response");
@@ -34,11 +30,8 @@ export const askAi = async (messages) => {
 
     return content;
   } catch (error) {
-    console.error(
-      "openrouter error:",
-      error.response?.data || error.message
-    );
+    console.error("openrouter error:", error.response?.data || error.message);
 
-    throw new Error("OpenRouter API Error");
+    throw new Error(error.response?.data?.error?.message || error.message);
   }
 };

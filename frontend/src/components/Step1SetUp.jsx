@@ -53,8 +53,19 @@ const Step1SetUp = ({ onStart }) => {
 
       setAnalyzing(false);
     } catch (error) {
-      console.log(error);
-      setAnalyzing(false);
+       console.log("Upload Resume Error:", error);
+
+  if (error.response) {
+    console.log(error.response.data);
+
+    alert(
+      error.response.data.message || "Server Error"
+    );
+  } else {
+    alert("Something went wrong");
+  }
+
+  setAnalyzing(false);
     }
   };
 
