@@ -2,6 +2,7 @@ import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import jsPDF from "jspdf"
 import {
   Area,
   AreaChart,
@@ -241,3 +242,8 @@ const step3Report = ({ report }) => {
 };
 
 export default step3Report;
+
+
+
+
+
