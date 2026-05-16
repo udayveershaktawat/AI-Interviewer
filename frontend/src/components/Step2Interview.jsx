@@ -338,7 +338,7 @@ useEffect(() => {
 
   if (timeLeft === 0 && !isSubmitting && !feedback) {
 
-    handleSubmit();
+    submitAnswer();
 
   }
 
