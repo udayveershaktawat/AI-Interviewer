@@ -4,7 +4,59 @@ import { useNavigate } from 'react-router-dom'
 
 function Pricing() {
 
+
+
   const navigate = useNavigate()
+
+
+  const plans = [
+  {
+    id: "free",
+    name: "Free",
+    price: "₹0",
+    credits: 100,
+    description:
+      "Perfect for beginners starting interview preparation.",
+    features: [
+      "100 AI Interview Credits",
+      "Basic Performance Report",
+      "Voice Interview Access",
+      "Limited History Tracking",
+    ],
+    default: true,
+  },
+
+  {
+    id: "basic",
+    name: "Starter Pack",
+    price: "₹100",
+    credits: 150,
+    description:
+      "Great for focused practice and skill improvement.",
+    features: [
+      "150 AI Interview Credits",
+      "Detailed Feedback",
+      "Performance Analytics",
+      "Full Interview History",
+    ],
+  },
+
+  {
+    id: "pro",
+    name: "Pro Pack",
+    price: "₹500",
+    credits: 650,
+    description:
+      "Best value for serious job preparation.",
+    features: [
+      "650 AI Interview Credits",
+      "Advanced AI Feedback",
+      "Skill Trend Analysis",
+      "Priority AI Processing",
+    ],
+    badge: "Best Value",
+  },
+];
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-emerald-50 py-16 px-6'>
