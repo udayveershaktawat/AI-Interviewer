@@ -17,6 +17,18 @@ function Pricing() {
           <FaArrowLeft className='text-gray-600' />
         </button>
 
+        <div className="text-center w-full">
+
+  <h1 className="text-4xl font-bold text-gray-800">
+    Choose Your Plan
+  </h1>
+
+  <p className="text-gray-500 mt-3 text-lg">
+    Flexible pricing to match your interview preparation goals.
+  </p>
+
+</div>
+
       </div>
 
     </div>
