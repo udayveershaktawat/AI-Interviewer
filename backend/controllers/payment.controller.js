@@ -1,4 +1,6 @@
 import razorpay from "../services/razorpay.service";
+import Payment from "../models/payment.model";
+import crypto from "crypto"
 
 export const createOrder = async (req, res) => {
   try {
@@ -62,6 +64,45 @@ export const verifyPayment = async (req, res) => {
         message: "Invalid payment signature",
       });
     }
+
+    const payment = await Payment.findOne({
+  razorpayOrderId: razorpay_order_id,
+});
+
+if (!payment) {
+  return res.status(404).json({
+    message: "Payment not found",
+  });
+}
+
+if (payment.status === "paid") {
+  return res.json({
+    message: "Already processed",
+  });
+}
+
+// Update payment record
+payment.status = "paid";
+payment.razorpayPaymentId = razorpay_payment_id;
+
+await payment.save();
+
+// Add credits to user
+const updatedUser = await User.findByIdAndUpdate(
+  payment.userId,
+  {
+    $inc: {
+      credits: payment.credits,
+    },
+  },
+  { new: true }
+);
+
+res.json({
+  success: true,
+  message: "Payment verified and credits added",
+  user: updatedUser,
+});
 
   } catch (error) {
     console.log(error);
