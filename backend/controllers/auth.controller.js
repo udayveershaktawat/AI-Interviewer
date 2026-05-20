@@ -27,8 +27,8 @@ export const googleAuth =async(req,res,)=>{
 
        res.cookie("token", token, {
     httpOnly: true,   // ✅ correct
-    secure: false,    // keep false for localhost
-    sameSite: "lax",  // better for development
+    secure: true,    // keep false for localhost
+    sameSite: "none",  // better for development
     
 });
 
