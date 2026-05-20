@@ -12,7 +12,7 @@ import Pricing from "./pages/Pricing";
 import InterviewReport from "./pages/InterviewReport";
 
 
-export const serverUrl = "http://localhost:4000";
+export const serverUrl = "https://ai-interviewer-hk0t.onrender.com";
 
 const App = () => {
 
