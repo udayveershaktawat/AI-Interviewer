@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   origin: [
-    "http://localhost:5173",
+    "https://ai-interviewer-frontend-jzxk.onrender.com",
     "https://ai-interviewer-rsv3.vercel.app/"
   ],
   credentials: true
